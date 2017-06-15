@@ -21,7 +21,7 @@ void ConfigParser::ParseJSON(const std::string & jsonFile, Config & config)
 /////////////////////////////////////////////////////////////////////////
 void ConfigParser::ParseKnownFaces(GenericArray<false, GenericValue<UTF8<>>> data, Config & config)
 {
-  for(int i = 0; i < data.Size(); i++)
+  for(unsigned int i = 0; i < data.Size(); i++)
   {
     KnownFace face;
     face.Name = data[i][Name].GetString();

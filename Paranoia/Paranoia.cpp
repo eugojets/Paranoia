@@ -36,7 +36,7 @@ int main(int argc, const char *argv[])
     console->error("Need to provide path to config.json");
     return 1;
   }
-  srand(time(nullptr));
+  srand((uint)time(nullptr));
 
   std::string configFile = argv[1];
   ConfigParser::Config config;

@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////
 void FaceRecognizer::LoadData(const std::vector<ConfigParser::KnownFace>& faces, std::vector<cv::Mat>& images, std::vector<int>& labels)
 {
-  for(size_t i = 0; i < faces.size(); i++)
+  for(int i = 0; i < faces.size(); i++)
   {
     auto face = faces[i];
     for each(std::string path in face.TrainingImages)
@@ -91,7 +91,7 @@ void FaceRecognizer::DrawPredictions(const cv::Rect& face, cv::Mat original, con
     // Calculate the position for annotated text
     int posX = std::max(face.tl().x - 10, 0);
     int posY = std::max(face.tl().y - 10, 0);
-    putText(original, text, cv::Point(posX, posY), cv::FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 255, 0), 2.0);
+    putText(original, text, cv::Point(posX, posY), cv::FONT_HERSHEY_PLAIN, 1.0, CV_RGB(0, 255, 0), 2);
   }
 }
 

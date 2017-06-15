@@ -97,7 +97,7 @@ void FaceDetector::DetectAndDraw(Mat& img, double scale, bool tryFlip)
 
   // Callbacks
   PrevFrame = FaceCount(CurrentFrame);
-  CurrentFrame = faces.size();
+  CurrentFrame = (uint)faces.size();
   CallSignals();
 
   // Draw
@@ -139,7 +139,7 @@ void FaceDetector::Detect(Mat& img, Mat& gray, Mat& smallImg, std::vector<Rect>&
   DetectionTime = t * 1000 / getTickFrequency();
 
   PrevFrame = FaceCount(CurrentFrame);
-  CurrentFrame = faces.size();
+  CurrentFrame = (uint)faces.size();
 }
 
 /////////////////////////////////////////////////////////////////////////
