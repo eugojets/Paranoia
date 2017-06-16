@@ -45,6 +45,9 @@
     <ClInclude Include="Host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VideoCaptureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Host.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoCaptureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

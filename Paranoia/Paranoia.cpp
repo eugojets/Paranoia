@@ -10,8 +10,9 @@
 
 #include "FaceDetector.h"
 #include "FaceRecognizer.h"
-#include "Host.h"
 #include "GammaRamp.h"
+#include "Host.h"
+#include "VideoCaptureManager.h"
 
 namespace spd = spdlog;
 
@@ -44,10 +45,12 @@ int main(int argc, const char *argv[])
   Host host;
 
   AddSpeech(host, config);
-
+  VideoCaptureManager videoCaptureManager(config.DeviceId);
+  
   FaceRecognizer recognizer(config);
+  videoCaptureManager.RegisterForFrame(&recognizer.ProcessFrame);
   std::future<void> facialRecognitionTask = std::async(std::launch::async, &FaceRecognizer::StartFacialRecognition, &recognizer);
-  //recognizer.DisplayLiveFeed(true);
+  recognizer.DisplayLiveFeed(true);
 
   auto OnRecognizeFaces = [&host](std::vector<std::string> people)
   {

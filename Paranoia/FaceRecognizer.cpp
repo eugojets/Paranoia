@@ -20,39 +20,39 @@ void FaceRecognizer::LoadData(const std::vector<ConfigParser::KnownFace>& faces,
 /////////////////////////////////////////////////////////////////////////
 void FaceRecognizer::Loop()
 {
-  cv::Mat frame;
-  while(IsRecognizingFaces)
-  {
-    VideoCapture >> frame;
-    cv::Mat original = frame.clone();
-    cv::Mat gray;
-    std::vector<cv::Rect_<int>> faces;
-    std::vector<std::string> Predictions;
-    GetFacesFromFrame(original, gray, faces);
+  //cv::Mat frame;
+  //while(IsRecognizingFaces)
+  //{
+  //  VideoCapture >> frame;
+  //  cv::Mat original = frame.clone();
+  //  cv::Mat gray;
+  //  std::vector<cv::Rect_<int>> faces;
+  //  std::vector<std::string> Predictions;
+  //  GetFacesFromFrame(original, gray, faces);
 
-    // Process each face
-    for(int i = 0; i < faces.size(); i++)
-    {
-      std::string name;
-      ProcessFace(gray, faces[i], original, name);
-      Predictions.push_back(name);
-    }
+  //  // Process each face
+  //  for(int i = 0; i < faces.size(); i++)
+  //  {
+  //    std::string name;
+  //    ProcessFace(gray, faces[i], original, name);
+  //    Predictions.push_back(name);
+  //  }
 
-    // Callback
-    OnRecognizeFaces(Predictions);
+  //  // Callback
+  //  OnRecognizeFaces(Predictions);
 
-    // Display the faces
-    if(ShouldDisplayLiveFeed)
-    {
-      imshow("FaceRecognizer", original);
-    }
-    char key = (char)cv::waitKey(20);
-    // Exit this loop on escape:
-    if(key == 27)
-    {
-      IsRecognizingFaces = false;
-    }
-  }
+  //  // Display the faces
+  //  if(ShouldDisplayLiveFeed)
+  //  {
+  //    imshow("FaceRecognizer", original);
+  //  }
+  //  char key = (char)cv::waitKey(20);
+  //  // Exit this loop on escape:
+  //  if(key == 27)
+  //  {
+  //    IsRecognizingFaces = false;
+  //  }
+  //}
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -130,16 +130,17 @@ FaceRecognizer::~FaceRecognizer()
 /////////////////////////////////////////////////////////////////////////
 void FaceRecognizer::StartFacialRecognition()
 {
-  VideoCapture = cv::VideoCapture(DeviceId);
-  if(!VideoCapture.isOpened())
-  {
-    Logger->error("Capture Device ID {0} cannot be opened", DeviceId);
-  }
-  else
-  {
-    IsRecognizingFaces = true;
-    Loop();
-  }
+  //VideoCapture = cv::VideoCapture(DeviceId);
+  //if(!VideoCapture.isOpened())
+  //{
+  //  Logger->error("Capture Device ID {0} cannot be opened", DeviceId);
+  //}
+  //else
+  //{
+  //  IsRecognizingFaces = true;
+  //  Loop();
+  //}
+  IsRecognizingFaces = true;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -152,4 +153,36 @@ void FaceRecognizer::StopFacialRecognition()
 void FaceRecognizer::DisplayLiveFeed(bool display)
 {
   ShouldDisplayLiveFeed = display;
+}
+
+/////////////////////////////////////////////////////////////////////////
+void FaceRecognizer::ProcessFrame(cv::Mat& frame)
+{
+  cv::Mat gray;
+  std::vector<cv::Rect_<int>> faces;
+  std::vector<std::string> Predictions;
+  GetFacesFromFrame(frame, gray, faces);
+
+  // Process each face
+  for(int i = 0; i < faces.size(); i++)
+  {
+    std::string name;
+    ProcessFace(gray, faces[i], frame, name);
+    Predictions.push_back(name);
+  }
+
+  // Callback
+  OnRecognizeFaces(Predictions);
+
+  // Display the faces
+  if(ShouldDisplayLiveFeed)
+  {
+    imshow("FaceRecognizer", frame);
+  }
+  char key = (char)cv::waitKey(20);
+  // Exit this loop on escape:
+  if(key == 27)
+  {
+    IsRecognizingFaces = false;
+  }
 }

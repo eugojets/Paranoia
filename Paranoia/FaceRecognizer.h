@@ -50,6 +50,7 @@ public:
   void StartFacialRecognition();
   void StopFacialRecognition();
   void DisplayLiveFeed(bool display);
+  void ProcessFrame(cv::Mat& frame);
 
   signal<void(std::vector<std::string>)> OnRecognizeFaces;
 };
