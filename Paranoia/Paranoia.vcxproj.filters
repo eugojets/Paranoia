@@ -48,6 +48,9 @@
     <ClInclude Include="VideoCaptureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IFrameObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

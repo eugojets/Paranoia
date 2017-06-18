@@ -34,42 +34,6 @@ bool FaceDetector::LoadCascades(const std::string& haarFile, const std::string& 
 }
 
 /////////////////////////////////////////////////////////////////////////
-bool FaceDetector::InitializeCamera()
-{
-  VideoCapture.open(0);
-  if(VideoCapture.isOpened())
-  {
-    Logger->info("Successfully opened camera");
-  }
-  else
-  {
-    Logger->error("Could not open camera");
-  }
-  return VideoCapture.isOpened();
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceDetector::Loop()
-{
-  while(IsDetectingFaces)
-  {
-    Mat frame;
-    VideoCapture >> frame;
-    if(frame.empty())
-    {
-      Logger->error("Frame is empty");
-      break;
-    }
-    DetectAndDraw(frame.clone(), 1, false);
-    if(EscapeKeys.count(waitKey(10)))
-    {
-      Logger->debug("Exiting loop");
-      EndFaceDetection();
-    }
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////
 void FaceDetector::CallSignals()
 {
   if(CurrentFrame > 0)
@@ -206,14 +170,12 @@ void FaceDetector::Draw(const std::vector<Rect> faces, Mat img, Mat smallImg, do
 /////////////////////////////////////////////////////////////////////////
 FaceDetector::FaceDetector(const ConfigParser::Config& config) :
   CascadesLoaded(false),
-  IsDetectingFaces(false),
   DetectionTime(-1),
   ShouldDisplayLiveFeed(false),
   ShowEyeDetection(false),
   PrevFrame(0),
   CurrentFrame(0)
 {
-  EscapeKeys.insert(27); // Esc is the default escape key
   LoadCascades(config.HaarFile, config.NestedHaarFile);
   Logger = spdlog::stdout_color_mt(Utility::Nameof(this));
 
@@ -223,54 +185,12 @@ FaceDetector::FaceDetector(const ConfigParser::Config& config) :
 /////////////////////////////////////////////////////////////////////////
 FaceDetector::~FaceDetector()
 {
-  VideoCapture.release();
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceDetector::StartFaceDetection()
-{
-  if(CascadesLoaded)
-  {
-    if(InitializeCamera())
-    {
-      Logger->info("Starting Face Detection");
-      IsDetectingFaces = true;
-      Loop();
-    }
-  }
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceDetector::EndFaceDetection()
-{
-  IsDetectingFaces = false;
 }
 
 /////////////////////////////////////////////////////////////////////////
 void FaceDetector::DisplayLiveFeed(bool display)
 {
   ShouldDisplayLiveFeed = display;
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceDetector::AddEscapeKey(int key)
-{
-  Locker lock(EscapeKeyLock);
-  EscapeKeys.insert(key);
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceDetector::SetEscapeKeys(std::set<int> keys)
-{
-  Locker lock(EscapeKeyLock);
-  EscapeKeys = keys;
-}
-
-/////////////////////////////////////////////////////////////////////////
-std::set<int> FaceDetector::GetEscapeKeys()
-{
-  Locker lock(EscapeKeyLock);
-  return EscapeKeys;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -309,4 +229,17 @@ bool FaceDetector::FaceDetected()
 double FaceDetector::GetDetectionTime()
 {
   return DetectionTime;
+}
+
+/////////////////////////////////////////////////////////////////////////
+void FaceDetector::ProcessFrame(cv::Mat& frame)
+{
+  if(frame.empty())
+  {
+    Logger->warn("Frame is empty");
+  }
+  else
+  {
+    DetectAndDraw(frame.clone(), 1, false);
+  }
 }

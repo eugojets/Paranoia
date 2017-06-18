@@ -11,9 +11,15 @@ void VideoCaptureManager::Loop()
   while(IsCapturingVideo)
   {
     VideoCapture >> frame;
-    for(auto& cb : Callbacks)
+    for(auto& observer : Observers)
     {
-      cb(frame.clone());
+      observer->ProcessFrame(frame.clone());
+    }
+
+    // If user hits an escape key
+    if(EscapeKeys.count(cv::waitKey(10)))
+    {
+      IsCapturingVideo = false;
     }
   }
 }
@@ -40,6 +46,7 @@ VideoCaptureManager::VideoCaptureManager(int deviceId) :
   IsCapturingVideo(false)
 {
   Logger = spdlog::stdout_color_mt(Utility::Nameof(this));
+  EscapeKeys.insert(27); // Esc is the default escape key
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -65,7 +72,21 @@ void VideoCaptureManager::StopVideoCapture()
 }
 
 /////////////////////////////////////////////////////////////////////////
-void VideoCaptureManager::RegisterForFrame(void(*cb)(cv::Mat&))
+void VideoCaptureManager::AddEscapeKey(int key)
 {
-  Callbacks.insert(*cb);
+  Locker lock(EscapeKeyLock);
+  EscapeKeys.insert(key);
+}
+
+/////////////////////////////////////////////////////////////////////////
+void VideoCaptureManager::SetEscapeKeys(std::set<int> keys)
+{
+  Locker lock(EscapeKeyLock);
+  EscapeKeys = keys;
+}
+
+/////////////////////////////////////////////////////////////////////////
+void VideoCaptureManager::RegisterFrameObserver(IFrameObserver* observer)
+{
+  Observers.insert(observer);
 }

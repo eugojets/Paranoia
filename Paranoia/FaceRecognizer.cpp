@@ -18,44 +18,6 @@ void FaceRecognizer::LoadData(const std::vector<ConfigParser::KnownFace>& faces,
 }
 
 /////////////////////////////////////////////////////////////////////////
-void FaceRecognizer::Loop()
-{
-  //cv::Mat frame;
-  //while(IsRecognizingFaces)
-  //{
-  //  VideoCapture >> frame;
-  //  cv::Mat original = frame.clone();
-  //  cv::Mat gray;
-  //  std::vector<cv::Rect_<int>> faces;
-  //  std::vector<std::string> Predictions;
-  //  GetFacesFromFrame(original, gray, faces);
-
-  //  // Process each face
-  //  for(int i = 0; i < faces.size(); i++)
-  //  {
-  //    std::string name;
-  //    ProcessFace(gray, faces[i], original, name);
-  //    Predictions.push_back(name);
-  //  }
-
-  //  // Callback
-  //  OnRecognizeFaces(Predictions);
-
-  //  // Display the faces
-  //  if(ShouldDisplayLiveFeed)
-  //  {
-  //    imshow("FaceRecognizer", original);
-  //  }
-  //  char key = (char)cv::waitKey(20);
-  //  // Exit this loop on escape:
-  //  if(key == 27)
-  //  {
-  //    IsRecognizingFaces = false;
-  //  }
-  //}
-}
-
-/////////////////////////////////////////////////////////////////////////
 void FaceRecognizer::GetFacesFromFrame(cv::Mat& original, cv::Mat& gray, std::vector<cv::Rect_<int>>& faces)
 {
   cvtColor(original, gray, CV_BGR2GRAY);
@@ -97,9 +59,7 @@ void FaceRecognizer::DrawPredictions(const cv::Rect& face, cv::Mat original, con
 
 /////////////////////////////////////////////////////////////////////////
 FaceRecognizer::FaceRecognizer(const ConfigParser::Config& Config) :
-  IsRecognizingFaces(false),
-  ShouldDisplayLiveFeed(false),
-  DeviceId(Config.DeviceId)
+  ShouldDisplayLiveFeed(false)
 {
   Logger = spdlog::stdout_color_mt(Utility::Nameof(this));
   People[-1] = "Unknown";
@@ -125,28 +85,6 @@ FaceRecognizer::FaceRecognizer(const ConfigParser::Config& Config) :
 /////////////////////////////////////////////////////////////////////////
 FaceRecognizer::~FaceRecognizer()
 {
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceRecognizer::StartFacialRecognition()
-{
-  //VideoCapture = cv::VideoCapture(DeviceId);
-  //if(!VideoCapture.isOpened())
-  //{
-  //  Logger->error("Capture Device ID {0} cannot be opened", DeviceId);
-  //}
-  //else
-  //{
-  //  IsRecognizingFaces = true;
-  //  Loop();
-  //}
-  IsRecognizingFaces = true;
-}
-
-/////////////////////////////////////////////////////////////////////////
-void FaceRecognizer::StopFacialRecognition()
-{
-  IsRecognizingFaces = false;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -178,11 +116,5 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
   if(ShouldDisplayLiveFeed)
   {
     imshow("FaceRecognizer", frame);
-  }
-  char key = (char)cv::waitKey(20);
-  // Exit this loop on escape:
-  if(key == 27)
-  {
-    IsRecognizingFaces = false;
   }
 }

@@ -16,6 +16,7 @@
 
 namespace spd = spdlog;
 
+/////////////////////////////////////////////////////////////////////////
 void AddSpeech(Host& host, const ConfigParser::Config& config)
 {
   for(auto& face : config.KnownFaces)
@@ -28,6 +29,53 @@ void AddSpeech(Host& host, const ConfigParser::Config& config)
   }
 }
 
+/////////////////////////////////////////////////////////////////////////
+void ConfigureFaceRecognizer(FaceRecognizer& recognizer,
+  VideoCaptureManager& videoCaptureManager,
+  Host& host,
+  const ConfigParser::Config& config)
+{
+  AddSpeech(host, config);
+  videoCaptureManager.RegisterFrameObserver(&recognizer);
+  recognizer.DisplayLiveFeed(false);
+
+  auto OnRecognizeFaces = [&host](std::vector<std::string> people)
+  {
+    host.Greet(people);
+  };
+
+  recognizer.OnRecognizeFaces.connect(OnRecognizeFaces);
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ConfigureFaceDetector(FaceDetector& detector, VideoCaptureManager& videoCaptureManager, CGammaRamp& ramp)
+{
+  detector.DisplayLiveFeed(false);
+  detector.ShowDetectedFaces(true);
+  detector.SetColor(0, FaceDetector::Color::PURPLE);
+
+  auto OnFaceDetected = [&ramp, &detector](FaceCount count)
+  {
+    if(ramp.GetCurrentBrightness() != CGammaRamp::NORMAL)
+    {
+      ramp.ResetBrightness();
+    }
+  };
+
+  auto OnNoFaceDetected = [&ramp]()
+  {
+    if(ramp.GetCurrentBrightness() != CGammaRamp::DIMMEST)
+    {
+      ramp.SetBrightness(CGammaRamp::DIMMEST);
+    }
+  };
+
+  detector.OnFaceDetected.connect(OnFaceDetected);
+  detector.OnNoFaceDetected.connect(OnNoFaceDetected);
+  videoCaptureManager.RegisterFrameObserver(&detector);
+}
+
+/////////////////////////////////////////////////////////////////////////
 int main(int argc, const char *argv[])
 {
   auto console = spd::stdout_color_mt("Main");
@@ -43,49 +91,19 @@ int main(int argc, const char *argv[])
   ConfigParser::Config config;
   ConfigParser::Parse(configFile, config);
   Host host;
-
-  AddSpeech(host, config);
   VideoCaptureManager videoCaptureManager(config.DeviceId);
-  
+
+  // FaceRecognizer
   FaceRecognizer recognizer(config);
-  videoCaptureManager.RegisterForFrame(&recognizer.ProcessFrame);
-  std::future<void> facialRecognitionTask = std::async(std::launch::async, &FaceRecognizer::StartFacialRecognition, &recognizer);
-  recognizer.DisplayLiveFeed(true);
+  ConfigureFaceRecognizer(recognizer, videoCaptureManager, host, config);
 
-  auto OnRecognizeFaces = [&host](std::vector<std::string> people)
-  {
-    host.Greet(people);
-  };
-
-  recognizer.OnRecognizeFaces.connect(OnRecognizeFaces);
-
+  // FaceDetector
   //FaceDetector detector(config);
-  //CGammaRamp GammaRamp;
+  //CGammaRamp gammeRamp;
+  //ConfigureFaceDetector(detector, videoCaptureManager, gammeRamp);
 
-  //std::future<void> fut = std::async(std::launch::async, &FaceDetector::StartFaceDetection, &detector);
-
-  //detector.DisplayLiveFeed(true);
-  //detector.ShowDetectedFaces(true);
-  //detector.SetColor(0, FaceDetector::Color::PURPLE);
-
-  //auto OnFaceDetected = [&GammaRamp, &detector](FaceCount count)
-  //{
-  //  if(GammaRamp.GetCurrentBrightness() != CGammaRamp::NORMAL)
-  //  {
-  //    GammaRamp.ResetBrightness();
-  //  }
-  //};
-
-  //auto OnNoFaceDetected = [&GammaRamp]()
-  //{
-  //  if(GammaRamp.GetCurrentBrightness() != CGammaRamp::DIMMEST)
-  //  {
-  //    GammaRamp.SetBrightness(CGammaRamp::DIMMEST);
-  //  }
-  //};
-
-  //detector.OnFaceDetected.connect(OnFaceDetected);
-  //detector.OnNoFaceDetected.connect(OnNoFaceDetected);
+  // This starts video recording asynchronously
+  std::future<void> videoCaptureTask = std::async(std::launch::async, &VideoCaptureManager::StartVideoCapture, &videoCaptureManager);
 
   return 0;
 }

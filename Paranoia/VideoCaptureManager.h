@@ -5,8 +5,10 @@
 #include <opencv2\highgui\highgui.hpp>
 #include <spdlog\spdlog.h>
 
-typedef std::shared_ptr<spdlog::logger> Logger;
+#include "IFrameObserver.h"
+#include "Locker.h"
 
+typedef std::shared_ptr<spdlog::logger> Logger;
 
 class VideoCaptureManager
 {
@@ -17,13 +19,17 @@ private:
   cv::VideoCapture VideoCapture;
   bool IsCapturingVideo;
   int DeviceId;
-  std::set<void(*)(cv::Mat&)> Callbacks;
+  std::set<int> EscapeKeys;
+  std::mutex EscapeKeyLock;
+  std::set<IFrameObserver*> Observers;
   Logger Logger;
 
 public:
   VideoCaptureManager(int deviceId);
-  ~VideoCaptureManager();
+  virtual ~VideoCaptureManager();
   void StartVideoCapture();
   void StopVideoCapture();
-  void RegisterForFrame(void(*cb)(cv::Mat&));
+  void AddEscapeKey(int key);
+  void SetEscapeKeys(std::set<int> keys);
+  void RegisterFrameObserver(IFrameObserver* observer);
 };

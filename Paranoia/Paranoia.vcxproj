@@ -154,6 +154,7 @@
     <ClInclude Include="FaceDetector.h" />
     <ClInclude Include="FaceRecognizer.h" />
     <ClInclude Include="GammaRamp.h" />
+    <ClInclude Include="IFrameObserver.h" />
     <ClInclude Include="Host.h" />
     <ClInclude Include="Locker.h" />
     <ClInclude Include="stdafx.h" />
