@@ -1,12 +1,11 @@
 #pragma once
 #include "stdafx.h"
 #include "sapi.h"
-
 #include <string>
 #include <map>
 #include <set>
 
-#include "spdlog\spdlog.h"
+#include <spdlog/spdlog.h>
 
 typedef std::shared_ptr<spdlog::logger> Logger;
 

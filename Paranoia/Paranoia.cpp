@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <spdlog\spdlog.h>
+#include <spdlog/spdlog.h>
 
 #include "FaceDetector.h"
 #include "FaceRecognizer.h"

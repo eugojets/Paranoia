@@ -5,9 +5,9 @@
 #include <vector>
 #include <set>
 
-#include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
-#include <spdlog\spdlog.h>
+#include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
+#include <spdlog/spdlog.h>
 
 using namespace rapidjson;
 

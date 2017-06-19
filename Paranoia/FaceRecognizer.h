@@ -4,15 +4,15 @@
 #include <vector>
 #include <map>
 
-#include <boost\signals2.hpp>
-#include "opencv2/core/core.hpp"
-#include "opencv2/face.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/objdetect/objdetect.hpp"
-#include "rapidjson/document.h"
-#include "rapidjson/filereadstream.h"
-#include <spdlog\spdlog.h>
+#include <boost/signals2.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/face.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
+#include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
+#include <spdlog/spdlog.h>
 
 #include "ConfigParser.h"
 #include "IFrameObserver.h"

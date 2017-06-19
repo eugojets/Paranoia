@@ -156,6 +156,7 @@
     <ClInclude Include="GammaRamp.h" />
     <ClInclude Include="IFrameObserver.h" />
     <ClInclude Include="Host.h" />
+    <ClInclude Include="ImageSaver.h" />
     <ClInclude Include="Locker.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

@@ -98,7 +98,7 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
 {
   cv::Mat gray;
   std::vector<cv::Rect_<int>> faces;
-  std::vector<std::string> Predictions;
+  std::vector<std::string> predictions;
   GetFacesFromFrame(frame, gray, faces);
 
   // Process each face
@@ -106,11 +106,11 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
   {
     std::string name;
     ProcessFace(gray, faces[i], frame, name);
-    Predictions.push_back(name);
+    predictions.push_back(name);
   }
 
   // Callback
-  OnRecognizeFaces(Predictions);
+  OnRecognizeFaces(predictions);
 
   // Display the faces
   if(ShouldDisplayLiveFeed)

@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #include <set>
 
-#include <opencv2\highgui\highgui.hpp>
-#include <spdlog\spdlog.h>
+#include <opencv2/highgui/highgui.hpp>
+#include <spdlog/spdlog.h>
 
 #include "IFrameObserver.h"
 #include "Locker.h"

@@ -4,9 +4,9 @@
 #include <map>
 #include <vector>
 
-#include <boost\signals2.hpp>
-#include <opencv2\opencv.hpp>
-#include <spdlog\spdlog.h>
+#include <boost/signals2.hpp>
+#include <opencv2/opencv.hpp>
+#include <spdlog/spdlog.h>
 
 #include "ConfigParser.h"
 #include "IFrameObserver.h"
