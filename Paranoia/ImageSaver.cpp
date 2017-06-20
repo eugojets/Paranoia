@@ -1,0 +1,21 @@
+#pragma once
+#include "stdafx.h"
+#include "ImageSaver.h"
+
+#include <opencv2/core/core.hpp>
+
+/////////////////////////////////////////////////////////////////////////
+ImageSaver::ImageSaver(std::string rootFolder) : RootFolder(rootFolder)
+{
+}
+
+/////////////////////////////////////////////////////////////////////////
+ImageSaver::~ImageSaver()
+{
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ImageSaver::SaveImage(std::string target, const cv::Mat & image)
+{
+  imwrite(target, image);
+}

@@ -54,6 +54,9 @@
     <ClInclude Include="ImageSaver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BoundedQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VideoCaptureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSaver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

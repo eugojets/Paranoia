@@ -150,6 +150,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundedQueue.h" />
     <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="FaceDetector.h" />
     <ClInclude Include="FaceRecognizer.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="FaceRecognizer.cpp" />
     <ClCompile Include="GammaRamp.cpp" />
     <ClCompile Include="Host.cpp" />
+    <ClCompile Include="ImageSaver.cpp" />
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="Paranoia.cpp" />
     <ClCompile Include="stdafx.cpp">
