@@ -1,16 +1,21 @@
 #pragma once
 #include "stdafx.h"
+#include <ctime>
 #include <iterator>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <Windows.h>
 
+typedef std::time_t Time;
+
 namespace Utility
 {
   std::vector<std::string> split(const std::string &s, char delim);
   void getContentsInDir(std::string dir, std::vector<std::string>& contents);
   void stringToWstring(const std::string& inStr, std::wstring& outStr);
+
+  Time now();
 
   // Gets the name of a class
   template<typename Class>

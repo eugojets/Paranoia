@@ -14,6 +14,9 @@
 #include "Host.h"
 #include "VideoCaptureManager.h"
 
+#include "BoundedDeqeue.h"
+#include <ctime>
+
 namespace spd = spdlog;
 
 /////////////////////////////////////////////////////////////////////////
@@ -75,6 +78,12 @@ void ConfigureFaceDetector(FaceDetector& detector, VideoCaptureManager& videoCap
   videoCaptureManager.RegisterFrameObserver(&detector);
 }
 
+void foo(std::shared_ptr<spdlog::logger> log)
+{
+  std::time_t result = std::time(nullptr);
+  auto now = std::asctime(std::localtime(&result));
+  log->info("Number of seconds: {0}", result);
+}
 /////////////////////////////////////////////////////////////////////////
 int main(int argc, const char *argv[])
 {
@@ -86,6 +95,8 @@ int main(int argc, const char *argv[])
     return 1;
   }
   srand((uint)time(nullptr));
+
+  foo(console);
 
   std::string configFile = argv[1];
   ConfigParser::Config config;

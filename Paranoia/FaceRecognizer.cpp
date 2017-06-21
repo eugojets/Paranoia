@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "FaceRecognizer.h"
 
+#include <future>
+
 /////////////////////////////////////////////////////////////////////////
 void FaceRecognizer::LoadData(const std::vector<ConfigParser::KnownFace>& faces, std::vector<cv::Mat>& images, std::vector<int>& labels)
 {
@@ -109,6 +111,12 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
     predictions.push_back(name);
   }
 
+  for(auto& observer : Observers)
+  {
+    //std::future<void> videoCaptureTask = std::async(std::launch::async, &VideoCaptureManager::StartVideoCapture, &videoCaptureManager);
+    std::async(std::launch::async, &IFacesRecognizedObserver::FacesRecognized, &observer, predictions, frame.clone()); 
+  }
+
   // Callback
   OnRecognizeFaces(predictions);
 
@@ -117,4 +125,10 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
   {
     imshow("FaceRecognizer", frame);
   }
+}
+
+/////////////////////////////////////////////////////////////////////////
+void FaceRecognizer::RegisterFacesRecognizedObserver(IFacesRecognizedObserver* observer)
+{
+  Observers.insert(observer);
 }

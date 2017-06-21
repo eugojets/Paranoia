@@ -27,6 +27,7 @@ public:
   {
     std::string HaarFile;
     std::string NestedHaarFile;
+    std::string IntrudersFolder;
     uint DeviceId;
     std::vector<KnownFace> KnownFaces;
   };
@@ -39,6 +40,7 @@ private:
 
   static constexpr const char* HaarFile = "haarFile";
   static constexpr const char* NestedHaarFile = "nestedHaarFile";
+  static constexpr const char* IntrudersFolder = "intrudersFolder";
   static constexpr const char* DeviceId = "deviceId";
   static constexpr const char* KnownFaces = "knownFaces";
   static constexpr const char* Name = "name";

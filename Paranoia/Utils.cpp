@@ -42,4 +42,10 @@ namespace Utility
   {
     outStr = std::wstring(inStr.begin(), inStr.end());
   }
+
+  /////////////////////////////////////////////////////////////////////////
+  Time now()
+  {
+    return std::time(nullptr);
+  }
 }

@@ -13,6 +13,7 @@ void ConfigParser::ParseJSON(const std::string & jsonFile, Config & config)
   document.ParseStream<0, UTF8<>, FileReadStream>(is);
   config.HaarFile = document[HaarFile].GetString();
   config.NestedHaarFile = document[NestedHaarFile].GetString();
+  config.IntrudersFolder = document[IntrudersFolder].GetString();
   config.DeviceId = document[DeviceId].GetInt();
   auto data = document[KnownFaces].GetArray();
   ParseKnownFaces(data, config);

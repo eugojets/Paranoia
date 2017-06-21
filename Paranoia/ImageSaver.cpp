@@ -15,7 +15,7 @@ ImageSaver::~ImageSaver()
 }
 
 /////////////////////////////////////////////////////////////////////////
-void ImageSaver::SaveImage(std::string target, const cv::Mat & image)
+void ImageSaver::SaveImage(std::string target, const cv::Mat& image)
 {
   imwrite(target, image);
 }

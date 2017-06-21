@@ -1,8 +1,9 @@
 #pragma once
 #include "stdafx.h"
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <boost/signals2.hpp>
 #include <opencv2/core/core.hpp>
@@ -16,6 +17,7 @@
 
 #include "ConfigParser.h"
 #include "IFrameObserver.h"
+#include "IFacesRecognizedObserver.h"
 #include "Utils.hpp"
 
 using boost::signals2::signal;
@@ -34,6 +36,7 @@ private:
 
   std::unordered_map<int, std::string> People;
   cv::Ptr<cv::face::FaceRecognizer> FaceRecognitionModel;
+  std::set<IFacesRecognizedObserver*> Observers;
   cv::CascadeClassifier Cascade;
   unsigned int Width;
   unsigned int Height;
@@ -46,6 +49,7 @@ public:
   virtual ~FaceRecognizer();
   void DisplayLiveFeed(bool display);
   virtual void ProcessFrame(cv::Mat& frame);
+  void RegisterFacesRecognizedObserver(IFacesRecognizedObserver* observer);
 
   signal<void(std::vector<std::string>)> OnRecognizeFaces;
 };

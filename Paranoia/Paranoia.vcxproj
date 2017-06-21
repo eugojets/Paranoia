@@ -150,13 +150,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoundedQueue.h" />
+    <ClInclude Include="BoundedDeque.h" />
     <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="FaceDetector.h" />
     <ClInclude Include="FaceRecognizer.h" />
     <ClInclude Include="GammaRamp.h" />
+    <ClInclude Include="IFacesRecognizedObserver.h" />
     <ClInclude Include="IFrameObserver.h" />
     <ClInclude Include="Host.h" />
+    <ClInclude Include="ImageQueueManager.h" />
     <ClInclude Include="ImageSaver.h" />
     <ClInclude Include="Locker.h" />
     <ClInclude Include="stdafx.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="FaceRecognizer.cpp" />
     <ClCompile Include="GammaRamp.cpp" />
     <ClCompile Include="Host.cpp" />
+    <ClCompile Include="ImageQueueManager.cpp" />
     <ClCompile Include="ImageSaver.cpp" />
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="Paranoia.cpp" />

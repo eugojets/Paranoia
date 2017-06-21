@@ -1,21 +1,22 @@
 #pragma once
 #include "stdafx.h"
-#include <queue>
+#include <deque>
 
 template <typename T>
-class BoundedQueue
+class BoundedDeque
 {
 private:
-  std::queue<T> Queue;
+  std::deque<T> Deque;
   unsigned int MaxSize;
 
 public:
-  BoundedQueue<T>(unsigned int max = 5);
-  virtual ~BoundedQueue<T>();
+  BoundedDeque<T>(unsigned int max = 5);
+  virtual ~BoundedDeque<T>();
   void Push(T data);
   void Pop();
   void Clear();
   const T Front();
+  const T Back();
   const unsigned int GetSize();
   const unsigned int GetMaxSize();
   const bool Empty();
@@ -23,69 +24,76 @@ public:
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline BoundedQueue<T>::BoundedQueue(unsigned int max = 5) : MaxSize(max)
+inline BoundedDeque<T>::BoundedDeque(unsigned int max = 5) : MaxSize(max)
 {
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline BoundedQueue<T>::~BoundedQueue()
+inline BoundedDeque<T>::~BoundedDeque()
 {
   Clear();
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline void BoundedQueue<T>::Push(T data)
+inline void BoundedDeque<T>::Push(T data)
 {
-  if(Queue.size() == MaxSize)
+  if(Deque.size() == MaxSize)
   {
-    Queue.pop();
+    Deque.pop_front();
   }
-  Queue.push(data);
+  Deque.push_back(data);
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline void BoundedQueue<T>::Pop()
+inline void BoundedDeque<T>::Pop()
 {
-  if(!Queue.empty())
+  if(!Deque.empty())
   {
-    Queue.pop();
+    Deque.pop_front();
   }
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline void BoundedQueue<T>::Clear()
+inline void BoundedDeque<T>::Clear()
 {
-  std::queue<T>().swap(Queue);
+  std::deque<T>().swap(Deque);
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline const T BoundedQueue<T>::Front()
+inline const T BoundedDeque<T>::Front()
 {
-  return Queue.empty() ? T() : Queue.front();
+  return Deque.empty() ? T() : Deque.front();
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline const unsigned int BoundedQueue<T>::GetSize()
+inline const T BoundedDeque<T>::Back()
 {
-  return Queue.size();
+  return Deque.empty() ? T() : Deque.back();
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline const unsigned int BoundedQueue<T>::GetMaxSize()
+inline const unsigned int BoundedDeque<T>::GetSize()
+{
+  return Deque.size();
+}
+
+/////////////////////////////////////////////////////////////////////////
+template<typename T>
+inline const unsigned int BoundedDeque<T>::GetMaxSize()
 {
   return MaxSize;
 }
 
 /////////////////////////////////////////////////////////////////////////
 template<typename T>
-inline const bool BoundedQueue<T>::Empty()
+inline const bool BoundedDeque<T>::Empty()
 {
-  return Queue.empty();
+  return Deque.empty();
 }
