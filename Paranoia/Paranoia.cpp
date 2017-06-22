@@ -12,10 +12,8 @@
 #include "FaceRecognizer.h"
 #include "GammaRamp.h"
 #include "Host.h"
+#include "ImageQueueManager.h"
 #include "VideoCaptureManager.h"
-
-#include "BoundedDeqeue.h"
-#include <ctime>
 
 namespace spd = spdlog;
 
@@ -36,7 +34,8 @@ void AddSpeech(Host& host, const ConfigParser::Config& config)
 void ConfigureFaceRecognizer(FaceRecognizer& recognizer,
   VideoCaptureManager& videoCaptureManager,
   Host& host,
-  const ConfigParser::Config& config)
+  const ConfigParser::Config& config,
+  ImageQueueManager& queueManager)
 {
   AddSpeech(host, config);
   videoCaptureManager.RegisterFrameObserver(&recognizer);
@@ -48,6 +47,7 @@ void ConfigureFaceRecognizer(FaceRecognizer& recognizer,
   };
 
   recognizer.OnRecognizeFaces.connect(OnRecognizeFaces);
+  recognizer.RegisterFacesRecognizedObserver(&queueManager);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -78,12 +78,6 @@ void ConfigureFaceDetector(FaceDetector& detector, VideoCaptureManager& videoCap
   videoCaptureManager.RegisterFrameObserver(&detector);
 }
 
-void foo(std::shared_ptr<spdlog::logger> log)
-{
-  std::time_t result = std::time(nullptr);
-  auto now = std::asctime(std::localtime(&result));
-  log->info("Number of seconds: {0}", result);
-}
 /////////////////////////////////////////////////////////////////////////
 int main(int argc, const char *argv[])
 {
@@ -96,8 +90,6 @@ int main(int argc, const char *argv[])
   }
   srand((uint)time(nullptr));
 
-  foo(console);
-
   std::string configFile = argv[1];
   ConfigParser::Config config;
   ConfigParser::Parse(configFile, config);
@@ -106,7 +98,9 @@ int main(int argc, const char *argv[])
 
   // FaceRecognizer
   FaceRecognizer recognizer(config);
-  ConfigureFaceRecognizer(recognizer, videoCaptureManager, host, config);
+  ImageQueueManager queueManager(config.IntrudersFolder, config.MaxQueueSize, config.Delay);
+
+  ConfigureFaceRecognizer(recognizer, videoCaptureManager, host, config, queueManager); 
 
   // FaceDetector
   //FaceDetector detector(config);

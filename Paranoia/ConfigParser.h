@@ -28,6 +28,8 @@ public:
     std::string HaarFile;
     std::string NestedHaarFile;
     std::string IntrudersFolder;
+    uint MaxQueueSize;
+    uint Delay;
     uint DeviceId;
     std::vector<KnownFace> KnownFaces;
   };
@@ -41,6 +43,8 @@ private:
   static constexpr const char* HaarFile = "haarFile";
   static constexpr const char* NestedHaarFile = "nestedHaarFile";
   static constexpr const char* IntrudersFolder = "intrudersFolder";
+  static constexpr const char* MaxQueueSize = "maxQueueSize";
+  static constexpr const char* Delay = "delay";
   static constexpr const char* DeviceId = "deviceId";
   static constexpr const char* KnownFaces = "knownFaces";
   static constexpr const char* Name = "name";

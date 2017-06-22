@@ -10,15 +10,25 @@ bool ImageQueueManager::ShouldEnqueue(const std::string& name)
 }
 
 /////////////////////////////////////////////////////////////////////////
-ImageQueueManager::ImageQueueManager(unsigned int maxSize = 5, unsigned int delay = 30) :
+ImageQueueManager::ImageQueueManager(std::string rootFolder, int maxSize = 5, unsigned int delay = 30) :
   Delay((Time)delay),
-  MaxQueueSize(maxSize)
+  MaxQueueSize(maxSize),
+  ImageSaver(rootFolder)
 {
 }
 
 /////////////////////////////////////////////////////////////////////////
 ImageQueueManager::~ImageQueueManager()
 {
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ImageQueueManager::FacesRecognized(std::vector<std::string> names, const cv::Mat& frame)
+{
+  for(auto& name : names)
+  {
+    Push(name, frame);
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -38,6 +48,7 @@ void ImageQueueManager::Push(const std::string& name, const cv::Mat& data)
       Utility::now(),
     };
     ImageQueues[name].Push(buffer);
+    ImageSaver.SaveImageAsync(name, buffer.Image);
   }
 }
 

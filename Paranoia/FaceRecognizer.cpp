@@ -111,11 +111,12 @@ void FaceRecognizer::ProcessFrame(cv::Mat& frame)
     predictions.push_back(name);
   }
 
+  // Notify observers asynchronously
   for(auto& observer : Observers)
   {
-    //std::future<void> videoCaptureTask = std::async(std::launch::async, &VideoCaptureManager::StartVideoCapture, &videoCaptureManager);
-    std::async(std::launch::async, &IFacesRecognizedObserver::FacesRecognized, &observer, predictions, frame.clone()); 
+    std::async(std::launch::async, &IFacesRecognizedObserver::FacesRecognized, observer, predictions, frame.clone()); 
   }
+
 
   // Callback
   OnRecognizeFaces(predictions);

@@ -14,7 +14,9 @@ void ConfigParser::ParseJSON(const std::string & jsonFile, Config & config)
   config.HaarFile = document[HaarFile].GetString();
   config.NestedHaarFile = document[NestedHaarFile].GetString();
   config.IntrudersFolder = document[IntrudersFolder].GetString();
-  config.DeviceId = document[DeviceId].GetInt();
+  config.MaxQueueSize = document[MaxQueueSize].GetUint();
+  config.Delay = document[Delay].GetUint();
+  config.DeviceId = document[DeviceId].GetUint();
   auto data = document[KnownFaces].GetArray();
   ParseKnownFaces(data, config);
 }

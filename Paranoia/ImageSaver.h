@@ -1,19 +1,25 @@
 #pragma once
 #include "stdafx.h"
+#include <filesystem>
 #include <string>
 
 #include <opencv2/highgui/highgui.hpp>
 #include <spdlog/spdlog.h>
+
+namespace fs = std::experimental::filesystem;
 
 typedef std::shared_ptr<spdlog::logger> Logger;
 
 class ImageSaver
 {
 private:
+  void GetTarget(const std::string& filename, std::string& target);
   Logger Logger;
-  std::string RootFolder;
+  fs::path RootFolder;
+  ImageSaver();
 public:
   ImageSaver(std::string rootFolder);
   virtual ~ImageSaver();
-  void SaveImage(std::string target, const cv::Mat& image);
+  void SaveImage(const std::string& filename, const cv::Mat& image);
+  void SaveImageAsync(const std::string& filename, const cv::Mat& image);
 };
