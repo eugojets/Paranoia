@@ -2,6 +2,9 @@
 #include "stdafx.h"
 #include "Utils.hpp"
 
+#include <iomanip>
+#include <sstream>
+
 namespace Utility
 {
   /////////////////////////////////////////////////////////////////////////
@@ -30,7 +33,7 @@ namespace Utility
         // have . or .. files on Windows
         if(fileName != "." && fileName != "..")
         {
-          contents.push_back(dir + "/" + fileName);
+          contents.push_back(dir + "\\" + fileName);
         }
       } while(FindNextFile(hFind, &data));
       FindClose(hFind);
@@ -41,6 +44,16 @@ namespace Utility
   void stringToWstring(const std::string& inStr, std::wstring& outStr)
   {
     outStr = std::wstring(inStr.begin(), inStr.end());
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  void getTimeWithFormat(const std::string& format, std::string& time)
+  {
+    Time t = now();
+    auto localtime = *std::localtime(&t);
+    std::ostringstream oss;
+    oss << std::put_time(&localtime, format.c_str());
+    time = oss.str();
   }
 
   /////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,7 @@ public:
     std::string HaarFile;
     std::string NestedHaarFile;
     std::string IntrudersFolder;
+    std::vector<std::string> AuthorizedUsers;
     uint MaxQueueSize;
     uint Delay;
     uint DeviceId;
@@ -36,6 +37,7 @@ public:
 
 private:
   static void ParseJSON(const std::string& jsonFile, Config& config);
+  static void ParseAuthorizedUsers(GenericArray<false, GenericValue<UTF8<>>> data, Config& config);
   static void ParseKnownFaces(GenericArray<false, GenericValue<UTF8<>>> data, Config& config);
   static void ParseSpeeches(GenericArray<false, GenericValue<UTF8<>>> data, std::set<std::string>& speeches);
   ConfigParser();
@@ -43,6 +45,7 @@ private:
   static constexpr const char* HaarFile = "haarFile";
   static constexpr const char* NestedHaarFile = "nestedHaarFile";
   static constexpr const char* IntrudersFolder = "intrudersFolder";
+  static constexpr const char* AuthorizedUsers = "authorizedUsers";
   static constexpr const char* MaxQueueSize = "maxQueueSize";
   static constexpr const char* Delay = "delay";
   static constexpr const char* DeviceId = "deviceId";

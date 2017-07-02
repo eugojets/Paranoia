@@ -6,7 +6,8 @@
 /////////////////////////////////////////////////////////////////////////
 bool ImageQueueManager::ShouldEnqueue(const std::string& name)
 {
-  return Utility::now() - ImageQueues[name].Back().timestamp > Delay;
+  return AuthorizedUsers.count(name) == 0 && 
+         Utility::now() - ImageQueues[name].Back().timestamp > Delay;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -23,11 +24,20 @@ ImageQueueManager::~ImageQueueManager()
 }
 
 /////////////////////////////////////////////////////////////////////////
-void ImageQueueManager::FacesRecognized(std::vector<std::string> names, const cv::Mat& frame)
+void ImageQueueManager::FacesRecognized(const std::vector<std::string>& names, const cv::Mat& frame)
 {
   for(auto& name : names)
   {
     Push(name, frame);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ImageQueueManager::AddAuthorizedUsers(const std::vector<std::string>& users)
+{
+  for(auto& user : users)
+  {
+    AuthorizedUsers.insert(user);
   }
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <ctime>
+#include <filesystem>
 #include <iterator>
 #include <string>
 #include <sstream>
@@ -14,6 +15,7 @@ namespace Utility
   std::vector<std::string> split(const std::string &s, char delim);
   void getContentsInDir(std::string dir, std::vector<std::string>& contents);
   void stringToWstring(const std::string& inStr, std::wstring& outStr);
+  void getTimeWithFormat(const std::string& format, std::string& time);
 
   Time now();
 

@@ -4,6 +4,7 @@
 
 #include <future>
 #include <filesystem>
+#include <iomanip>
 #include <vector>
 
 #include <opencv2/core/core.hpp>
@@ -13,11 +14,30 @@
 namespace fs = std::experimental::filesystem;
 
 /////////////////////////////////////////////////////////////////////////
-void ImageSaver::GetTarget(const std::string& filename, std::string& target)
+void ImageSaver::GetTarget(const std::string& name, std::string& target)
 {
-  fs::path file(filename + ".png");
-  fs::path targetPath = RootFolder / file;
+  fs::path targetDir = RootFolder / name;
+  BootstrapDir(name);
+  std::string time;
+  Utility::getTimeWithFormat("%d-%m-%Y_%H%M%S", time);
+  fs::path file(time + ".png");
+  fs::path targetPath = targetDir / file;
   target = targetPath.string();
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ImageSaver::BootstrapDir(const std::string& directory)
+{
+  fs::path target = RootFolder / directory;
+
+  if(!fs::exists(target))
+  {
+    Logger->info("Creating folder for {0}", directory);
+    if(!fs::create_directory(target))
+    {
+      Logger->warn("Failed to create folder for {0}", directory);
+    }
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////

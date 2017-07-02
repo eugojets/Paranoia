@@ -14,6 +14,7 @@ void ConfigParser::ParseJSON(const std::string & jsonFile, Config & config)
   config.HaarFile = document[HaarFile].GetString();
   config.NestedHaarFile = document[NestedHaarFile].GetString();
   config.IntrudersFolder = document[IntrudersFolder].GetString();
+  ParseAuthorizedUsers(document[AuthorizedUsers].GetArray(), config);
   config.MaxQueueSize = document[MaxQueueSize].GetUint();
   config.Delay = document[Delay].GetUint();
   config.DeviceId = document[DeviceId].GetUint();
@@ -22,7 +23,16 @@ void ConfigParser::ParseJSON(const std::string & jsonFile, Config & config)
 }
 
 /////////////////////////////////////////////////////////////////////////
-void ConfigParser::ParseKnownFaces(GenericArray<false, GenericValue<UTF8<>>> data, Config & config)
+void ConfigParser::ParseAuthorizedUsers(GenericArray<false, GenericValue<UTF8<>>> data, Config& config)
+{
+  for(unsigned int i = 0; i < data.Size(); i++)
+  {
+    config.AuthorizedUsers.push_back(data[i].GetString());
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////
+void ConfigParser::ParseKnownFaces(GenericArray<false, GenericValue<UTF8<>>> data, Config& config)
 {
   for(unsigned int i = 0; i < data.Size(); i++)
   {

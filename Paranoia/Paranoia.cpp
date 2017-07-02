@@ -40,6 +40,7 @@ void ConfigureFaceRecognizer(FaceRecognizer& recognizer,
   AddSpeech(host, config);
   videoCaptureManager.RegisterFrameObserver(&recognizer);
   recognizer.DisplayLiveFeed(false);
+  queueManager.AddAuthorizedUsers(config.AuthorizedUsers);
 
   auto OnRecognizeFaces = [&host](std::vector<std::string> people)
   {

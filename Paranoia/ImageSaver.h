@@ -13,7 +13,8 @@ typedef std::shared_ptr<spdlog::logger> Logger;
 class ImageSaver
 {
 private:
-  void GetTarget(const std::string& filename, std::string& target);
+  void GetTarget(const std::string& name, std::string& target);
+  void BootstrapDir(const std::string& folder);
   Logger Logger;
   fs::path RootFolder;
   ImageSaver();

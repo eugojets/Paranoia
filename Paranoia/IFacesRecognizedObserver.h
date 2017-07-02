@@ -8,6 +8,6 @@
 class IFacesRecognizedObserver
 {
 public:
-  virtual void FacesRecognized(std::vector<std::string> names, const cv::Mat& frame) = 0;
+  virtual void FacesRecognized(const std::vector<std::string>& names, const cv::Mat& frame) = 0;
 };
 
